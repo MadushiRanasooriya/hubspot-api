@@ -55,6 +55,15 @@ def home():
         stage_name = stage_labels.get(stage_id, "Unknown")
         stage_counts[stage_name] = stage_counts.get(stage_name, 0) + 1
 
+    ordered_keys = [
+        "New Leads",
+        "Appointment",
+        "Offer",
+        "Negotiation",
+        "Customers",
+        "Target Customers"
+    ]
+
     stage_counts_combined = {
         "New Leads": stage_counts.get("NEW", 0)  + stage_counts.get("LOST - RENEGOTIATION", 0),
         "Appointment": stage_counts.get("APPOINTMENT SCHEDULED", 0),
@@ -64,10 +73,11 @@ def home():
         "Target Customers": 12
     }
 
-    labels = list(stage_counts_combined.keys())
-    counts = list(stage_counts_combined.values())
+    ordered_result = {key: stage_counts_combined[key] for key in ordered_keys}
+
+   
     
-    return jsonify(stage_counts_combined)
+    return jsonify(ordered_result)
 
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
